@@ -1,5 +1,5 @@
 {
-  "body": "{\"message\": \"hello world\"}",
+  "body": "{\"userId\": \"12345\",\"event\": \"user_clicked_promo\",\"timestamp\": \"2025-08-08T16:30:00Z\",\"metadata\": {\"promoId\": \"PROMO_001\",\"device\": \"mobile\",\"preferredChannel\": \"push\"}}",
   "resource": "/track",
   "path": "/track",
   "httpMethod": "POST",
