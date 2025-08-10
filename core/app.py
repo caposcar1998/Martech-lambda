@@ -1,5 +1,3 @@
-import json
-
 from decorators.decorators import json_response
 from api.track import eventTrack, add_destinations
 
@@ -16,5 +14,5 @@ def lambda_handler(event, context):
 
     handler = ROUTES.get((path, method))
 
-    body = json.loads(event.get("body", "{}"))
+    body = event.get("body", "{}")
     return handler(body) 

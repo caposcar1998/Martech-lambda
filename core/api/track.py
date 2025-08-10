@@ -7,5 +7,5 @@ def eventTrack(body):
         return { "body": json.dumps({"messageId": messageId})}
 
 def add_destinations(body):
-        res = spin_create("destinations", body)
+        res = spin_create("destinations", json.loads(body))
         return { "body": json.dumps({"Destination created status ": res})}
