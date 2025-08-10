@@ -15,6 +15,10 @@ Others go to a notification system to send alerts or messages.
 
 You can new destinations with a simple API call, this will ocurr at the moment without needing to redeploy the lambda function!
 
+# Diagram
+
+![Diagram](image.png)
+
 # Requirements
 
 - [Python 3.13](https://www.python.org/downloads/release/python-3919/)
