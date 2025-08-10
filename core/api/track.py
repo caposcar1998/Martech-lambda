@@ -2,18 +2,15 @@ import boto3
 import os
 
 sqs = boto3.client("sqs")
-#QUEUE_URL = os.environ["https://sqs.us-east-1.amazonaws.com/477287708544/events"]
+QUEUE_URL = os.environ["QUEUE_URL"]
 
 def eventTrack(body):
-
     print("oscar manda")
     res = sqs.send_message(
-        QueueUrl="https://sqs.us-east-1.amazonaws.com/477287708544/events",
+        QueueUrl=QUEUE_URL,
         MessageBody=body
     )
-
     print("hola oscar")
-    # Handle tracking event
     return {
         "statusCode": 200,
         "body": f"Tracked: {body}"
