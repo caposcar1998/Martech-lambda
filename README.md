@@ -28,6 +28,17 @@ You can new destinations with a simple API call, this will ocurr at the moment w
 
 # Installation
 
+## Test current implementation
+
+If you do not want to install all the necesarry dependencies you can test asking @caposcar for the URLs
+current URLs
+
+1. In the current implementation there 3 beeceptor created, 2 of them function as analytics and one as notificacions
+
+1. [analytics](https://app.beeceptor.com/console/testoscar)
+1. [analytics](https://app.beeceptor.com/console/testcomms)
+1. [comms](https://app.beeceptor.com/console/testsrive)
+
 ## Mount the project in the cloud (Recommended)
 
 Mounting the project needs an AWS accountt configured in the CLI , and SAM installed
@@ -52,6 +63,10 @@ make deploy
 
 - Destinations: All the destinations the events can go to
 - Responses: Logs if the CDP calls are succesfull or not.
+
+6. Create destinations using the endopoint /destinations
+
+7. Send track events using /track
 
 ## Locally (Not recommended as it depends in AWS SQS and dybamoDB)
 
