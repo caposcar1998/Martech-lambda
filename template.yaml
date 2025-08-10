@@ -25,7 +25,7 @@ Resources:
   Destinations:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: orders
+      TableName: destinations
       AttributeDefinitions:
         - AttributeName: destinationName
           AttributeType: S

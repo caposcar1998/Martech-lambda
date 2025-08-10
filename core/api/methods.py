@@ -1,6 +1,6 @@
 import requests
 
-def spinPost(url, payload, headers=None, timeout=10):
+def spin_post(url, payload, headers=None, timeout=10):
     try:
         default_headers = {"Content-Type": "application/json"}
         if headers:
@@ -18,7 +18,7 @@ def spinPost(url, payload, headers=None, timeout=10):
     return None
 
 
-def spinGet(url, params=None, headers=None, timeout=10):
+def spin_get(url, params=None, headers=None, timeout=10):
     try:
         default_headers = {"Accept": "application/json"}
         if headers:
