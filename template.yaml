@@ -50,9 +50,12 @@ Resources:
       Policies:
         - SQSSendMessagePolicy:
             QueueName: !GetAtt EventsQueue.QueueName
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Destinations
       Environment:
         Variables:
           QUEUE_URL: !GetAtt EventsQueue.QueueUrl
+          DESTINATIONS_TABLE: !Ref Destinations
       Events:
         SendEvent:
           Type: Api

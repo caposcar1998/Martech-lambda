@@ -21,7 +21,7 @@ def spin_get_item(table_name, key):
         print(f"Error getting item: {e.response['Error']['Message']}")
         return None
     
-def spin_get(table_name):
+def spin_get_all(table_name) -> list[dict]:
     table = dynamodb.Table(table_name)
     try:
         response = table.scan()
