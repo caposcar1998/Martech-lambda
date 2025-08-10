@@ -30,6 +30,8 @@ You can new destinations with a simple API call, this will ocurr at the moment w
 
 ## Mount the project in the cloud (Recommended)
 
+Mounting the project needs an AWS accountt configured in the CLI , and SAM installed
+
 1. Build the project using
 
 ```bash
@@ -126,7 +128,6 @@ Create a new destination for the events
   "url": "https://testsrive.free.beeceptor.com",
   "type":"CDP" "OR" "analytics",
   "headers": "",
-  "password":""
   }
   ```
 
@@ -147,3 +148,18 @@ Create a new destination for the events
   "error": ""
 }
 ```
+
+# Databases schema
+
+### Destinations
+
+- destinationName : string = name of the destination
+- headers: object = headers needed for the API call
+- Type: string (CDP or analytcs) = will tell the type of call needed
+- Url: string = Where the call be made
+
+### Responses
+
+- responseId: string: Message Id
+- responseBody: object = payload send
+- destinations: object = Status of each destination status

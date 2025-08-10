@@ -23,7 +23,6 @@ class DestinationsDTO(BaseModel):
     url: str
     type: DestinationType
     headers: Optional[str]
-    password: Optional[str]
 
 class SQSRecordDTO(BaseModel):
     messageId: str
