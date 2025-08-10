@@ -1,19 +1,7 @@
 import json
-from pydantic import BaseModel
-from typing import Optional
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 from queues.queueSender import spin_send_message_queue
-
-class MetadataDTO(BaseModel):
-    promoId: str
-    device: str
-    preferredChannel: Optional[str] = None
-
-class TrackEventDTO(BaseModel):
-    userId: str
-    event: str
-    timestamp: str
-    metadata: MetadataDTO
+from models.models import TrackEventDTO
 
 def event_track(body: str) -> dict[str, str]:
     try:

@@ -1,19 +1,7 @@
 import json
-from enum import Enum
-from pydantic import BaseModel, ValidationError
-from typing import Optional
+from pydantic import ValidationError
 from database.methods import spin_create
-
-
-class DestinationType(str, Enum):
-    ANALYTICS = "analytics"
-    CDP = "CDP"
-class DestinationsDTO(BaseModel):
-    destinationName: str
-    url: str
-    type: DestinationType
-    headers: Optional[str]
-    password: Optional[str]
+from models.models import DestinationsDTO
 
 def add_destinations(body: str) -> dict[str, str]:
     try:
