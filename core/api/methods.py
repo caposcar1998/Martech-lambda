@@ -12,7 +12,7 @@ def spin_post(url: str, payload: Any | None, headers=None, timeout=10):
             url, json=payload, headers=default_headers, timeout=timeout
         )
         return response.status_code
-    except requests.RequestException as e:
+    except requests.RequestException:
         return 500
     except ValueError:
         return 500
@@ -29,8 +29,8 @@ def spin_get(url, params=None, headers=None, timeout=10):
         )
         response.raise_for_status()
 
-        return response.json()
-    except requests.RequestException as e:
-        return None
+        return response.status_code
+    except requests.RequestException:
+        return 500
     except ValueError:
-        return None
+        return 500
