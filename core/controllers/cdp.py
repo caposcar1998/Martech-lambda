@@ -6,8 +6,9 @@ def spin_send_communication(destination, body, insert_destination):
     destination_url = destination["url"]
     destination_headers = destination.get("headers", None) 
 
-    body["communication_channel"] = define_type_communication(body)
-    res = spin_post(destination_url, body, destination_headers)
+    preferd_communication_channel = define_type_communication(body)
+    url_communication = destination_url+"/"+preferd_communication_channel
+    res = spin_post(url_communication, body, destination_headers)
 
     if res is not 200:
         insert_destination.destinations[destination["destinationName"]] = False
@@ -18,11 +19,11 @@ def spin_send_communication(destination, body, insert_destination):
 def define_type_communication(message: TrackEventDTO) -> str:
     messageF = safe_json_parse(message)
     preferred = messageF["metadata"]["preferredChannel"]
-    if preferred is "push":
+    if preferred == "push":
         return "push"
-    if preferred is "email":
+    if preferred == "email":
         return "email"  
-    if preferred is "sms":
+    if preferred == "sms":
         return "sms"    
     return ""  
 

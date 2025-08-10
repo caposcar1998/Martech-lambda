@@ -8,8 +8,6 @@ def lambda_handler(event, context):
     for record_dict in event["Records"]:
         record = SQSRecordDTO(**record_dict)
         
-        print("AQUI INICIA")
-        print(record.body)
         try:
             parsed_body = json.loads(record.body)
         except json.JSONDecodeError as e:

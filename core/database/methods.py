@@ -44,5 +44,4 @@ def spin_create(table_name: str, item: dict[str, Any]) -> str:
         table.put_item(Item=item)
         return "success"
     except Exception as e:
-        print("error", e)
         return "error"
