@@ -11,15 +11,11 @@ def spin_post(url: str, payload: Any | None, headers=None, timeout=10):
         response = requests.post(
             url, json=payload, headers=default_headers, timeout=timeout
         )
-        response.raise_for_status()
-
-        # Try to parse JSON response
-        return response.json()
+        return response.status_code
     except requests.RequestException as e:
-        print(f"Request failed: {e}")
+        return 500
     except ValueError:
-        print("Response not JSON.")
-    return None
+        return 500
 
 
 def spin_get(url, params=None, headers=None, timeout=10):
@@ -35,7 +31,6 @@ def spin_get(url, params=None, headers=None, timeout=10):
 
         return response.json()
     except requests.RequestException as e:
-        print(f"Request failed: {e}")
+        return None
     except ValueError:
-        print("Response not JSON.")
-    return None
+        return None

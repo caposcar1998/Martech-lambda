@@ -1,5 +1,5 @@
-from typing import Optional
-from pydantic import BaseModel
+from typing import Optional, Any, Dict
+from pydantic import BaseModel, Field
 from typing import Dict 
 from enum import Enum
 
@@ -35,3 +35,8 @@ class SQSRecordDTO(BaseModel):
     eventSource: str
     eventSourceARN: str
     awsRegion: str
+
+class InsertDestinationDTO(BaseModel):
+    responseId: str
+    responseBody: Any
+    destinations: Dict[Any, Any] = Field(default_factory=dict) 
