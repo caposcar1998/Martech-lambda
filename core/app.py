@@ -1,11 +1,11 @@
-import json
+from decorators.decorators import json_response
 from api.track import eventTrack
-# import requests
 
 ROUTES = {
     ("/track", "post"): eventTrack,
 }
 
+@json_response
 def lambda_handler(event, context):
 
     path = event.get("path", "")
@@ -13,11 +13,5 @@ def lambda_handler(event, context):
 
     handler = ROUTES.get((path, method))
 
-    if handler:
-        body = event.get("body", "{}")
-        return handler(body) 
-
-    return {
-        "statusCode": 404,
-        "body": "Endpoint not found"
-    }
+    body = event.get("body", "{}")
+    return handler(body) 

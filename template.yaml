@@ -39,14 +39,12 @@ Resources:
   Processor:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: core/event_queue
-      Handler: app.lambda_handler
+      CodeUri: core/
+      Handler: event_queue.app.lambda_handler
       Runtime: python3.13
       Architectures:
         - x86_64
       Policies:
-        - SQSSendMessagePolicy:
-            QueueName: !GetAtt EventsQueue.QueueName
         - SQSPollerPolicy:
             QueueName: !GetAtt EventsQueue.QueueName
       Environment:

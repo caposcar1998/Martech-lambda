@@ -1,17 +1,6 @@
-import boto3
-import os
-
-sqs = boto3.client("sqs")
-QUEUE_URL = os.environ["QUEUE_URL"]
+import json
+from queues.queueSender import send_message_queue
 
 def eventTrack(body):
-    print("oscar manda")
-    res = sqs.send_message(
-        QueueUrl=QUEUE_URL,
-        MessageBody=body
-    )
-    print("hola oscar")
-    return {
-        "statusCode": 200,
-        "body": f"Tracked: {body}"
-    }
+        messageId = send_message_queue(body)
+        return { "body": json.dumps({"messageId": messageId})}
