@@ -17,10 +17,10 @@ You can new destinations with a simple API call, this will ocurr at the moment w
 
 # Requirements
 
-- (Python 3.13)[https://www.python.org/downloads/release/python-3919/]
-- (AWS CLI)[https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html]
-- (Sam CLI)[https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html]
-- (Docker)[https://www.docker.com/products/docker-desktop/]
+- [Python 3.13](https://www.python.org/downloads/release/python-3919/)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+- [Sam CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
 # Installation
 
@@ -68,7 +68,7 @@ sam local start-api
 4. Run a function individually
 
 ```bash
-    sam local invoke <FunctionLogicalID> -e <event_file.json>
+sam local invoke <FunctionLogicalID> -e <event_file.json>
 ```
 
 # API Endpoints
@@ -120,7 +120,7 @@ Create a new destination for the events
   {
   "destinationName": "Braze12",
   "url": "https://testsrive.free.beeceptor.com",
-  "type":"CDP" | "analytics",
+  "type":"CDP" "OR" "analytics",
   "headers": "",
   "password":""
   }
