@@ -62,6 +62,11 @@ Resources:
           Properties:
             Path: /track
             Method: post
+        AddDestination:
+          Type: Api
+          Properties:
+            Path: /destinations
+            Method: post
 
   Processor:
     Type: AWS::Serverless::Function
