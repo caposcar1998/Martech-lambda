@@ -1,6 +1,4 @@
 import json
-from pydantic import BaseModel
-from typing import Optional,Dict
 from controllers.analytics import send_analytics
 from controllers.cdp import spin_send_communication
 from database.methods import spin_add_item, spin_get_all
