@@ -4,25 +4,23 @@ from typing import Any
 
 dynamodb = boto3.resource('dynamodb')
 
-def spin_add_item(table_name, item):
+def spin_add_item(table_name: str, item: list[dict]) -> str:
     table = dynamodb.Table(table_name)
     try:
-        response = table.put_item(Item=item)
-        return response
-    except ClientError as e:
-        print(f"Error adding item: {e.response['Error']['Message']}")
-        return None
+        table.put_item(Item=item)
+        return "ok"
+    except ClientError:
+        return "error"
 
-def spin_get_item(table_name, key):
+def spin_get_item(table_name: str, key: str) -> Any:
     table = dynamodb.Table(table_name)
     try:
         response = table.get_item(Key=key)
         return response.get('Item')
     except ClientError as e:
-        print(f"Error getting item: {e.response['Error']['Message']}")
         return None
     
-def spin_get_all(table_name) -> list[dict]:
+def spin_get_all(table_name: str) -> list[dict]:
     table = dynamodb.Table(table_name)
     try:
         response = table.scan()
@@ -35,10 +33,9 @@ def spin_get_all(table_name) -> list[dict]:
             
         return items
     except ClientError as e:
-        print(f"Error scanning table: {e.response['Error']['Message']}")
         return None
     
-def spin_create(table_name, item: dict[str, Any]):
+def spin_create(table_name: str, item: dict[str, Any]) -> str:
     table = dynamodb.Table(table_name)
     try:
         table.put_item(Item=item)

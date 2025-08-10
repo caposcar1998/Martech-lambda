@@ -1,6 +1,7 @@
 import requests
+from typing import Any
 
-def spin_post(url, payload, headers=None, timeout=10):
+def spin_post(url: str, payload: Any | None , headers=None, timeout=10):
     try:
         default_headers = {"Content-Type": "application/json"}
         if headers:
