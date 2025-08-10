@@ -10,6 +10,30 @@ Globals:
       LogFormat: JSON
 
 Resources:
+  Responses:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: responses
+      AttributeDefinitions:
+        - AttributeName: responseId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: responseId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  Destinations:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: orders
+      AttributeDefinitions:
+        - AttributeName: destinationName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: destinationName
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
   EventsQueue:
     Type: AWS::SQS::Queue
     Properties:
@@ -47,9 +71,15 @@ Resources:
       Policies:
         - SQSPollerPolicy:
             QueueName: !GetAtt EventsQueue.QueueName
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Responses
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Destinations
       Environment:
         Variables:
           QUEUE_URL: !GetAtt EventsQueue.QueueUrl
+          RESPONSES_TABLE: !Ref Responses
+          DESTINATIONS_TABLE: !Ref Destinations
       Events:
         QueueEvent:
           Type: SQS

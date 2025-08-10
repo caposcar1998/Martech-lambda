@@ -1,6 +1,7 @@
 import json
 
 from api.methods import spinPost, spinGet
+from database.methods import spin_add_item
 def lambda_handler(event, context):
     # event['Records'] is a list of messages from SQS
     for record in event['Records']:
@@ -10,8 +11,13 @@ def lambda_handler(event, context):
         # You can parse JSON if your messages are JSON encoded
         try:
             data = json.loads(message_body)
-            spinPost("https://testoscar.free.beeceptor.com", data)
-            spinGet("https://testoscar.free.beeceptor.com", data)
+            res = spinPost("https://testoscar.free.beeceptor.com", data)
+            item = {
+                "responseId": "1",
+                "responseCode": 200,
+                "responseBody": res
+            }
+            spin_add_item("responses",item)
         except json.JSONDecodeError:
             data = message_body
 
