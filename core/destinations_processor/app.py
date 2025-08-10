@@ -31,7 +31,8 @@ def lambda_handler(event, context):
             for destination in destinations:
                 if destination["type"] == "CDP":
                     spin_send_communication(destination, parsed_body, insert_destination)
-                send_analytics(destination, parsed_body, insert_destination)
+                else:
+                    send_analytics(destination, parsed_body, insert_destination)
                 
 
         except Exception as e:
