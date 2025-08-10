@@ -4,17 +4,7 @@ from typing import Optional,Dict
 from controllers.analytics import send_analytics
 from controllers.cdp import spin_send_communication
 from database.methods import spin_add_item, spin_get_all
-
-class SQSRecordDTO(BaseModel):
-    messageId: str
-    receiptHandle: str
-    body: str
-    attributes: Optional[Dict[str, str]]
-    messageAttributes: Optional[Dict[str, Dict[str, str]]]
-    md5OfBody: str
-    eventSource: str
-    eventSourceARN: str
-    awsRegion: str
+from models.models import SQSRecordDTO
 
 def lambda_handler(event, context):
     for record_dict in event["Records"]:
