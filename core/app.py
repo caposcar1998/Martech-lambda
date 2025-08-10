@@ -6,6 +6,7 @@ ROUTES = {
     ("/destinations", "post"): add_destinations,
 }
 
+
 @json_response
 def lambda_handler(event, context):
 
@@ -15,4 +16,4 @@ def lambda_handler(event, context):
     handler = ROUTES.get((path, method))
 
     body = event.get("body", "{}")
-    return handler(body) 
+    return handler(body)
