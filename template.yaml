@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  martech-lambda
+
+Globals:
+  Function:
+    Timeout: 3
+    LoggingConfig:
+      LogFormat: JSON
+
+Resources:
+  EventsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: events
+
+  MartechFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: core/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt EventsQueue.QueueName
+      Environment:
+        Variables:
+          QUEUE_URL: !GetAtt EventsQueue.QueueUrl
+      Events:
+        SendEvent:
+          Type: Api
+          Properties:
+            Path: /track
+            Method: post
+
+  Processor:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: core/event_queue
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+      Policies:
+        - SQSSendMessagePolicy:
+            QueueName: !GetAtt EventsQueue.QueueName
+        - SQSPollerPolicy:
+            QueueName: !GetAtt EventsQueue.QueueName
+      Environment:
+        Variables:
+          QUEUE_URL: !GetAtt EventsQueue.QueueUrl
+      Events:
+        QueueEvent:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt EventsQueue.Arn
+            BatchSize: 10
+
+Outputs:
+  MartechApi:
+    Description: API Gateway endpoint URL for Prod stage for Martech function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/track"
+
+  MartechFunction:
+    Description: Martech Lambda Function ARN
+    Value: !GetAtt MartechFunction.Arn
+
+  MartechFunctionIamRole:
+    Description: Implicit IAM Role created for Martech function
+    Value: !GetAtt MartechFunctionRole.Arn
