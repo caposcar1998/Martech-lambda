@@ -43,7 +43,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: core/
-      Handler: app.lambda_handler
+      Handler: api.app.lambda_handler
       Runtime: python3.13
       Architectures:
         - x86_64
@@ -72,7 +72,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: core/
-      Handler: event_queue.app.lambda_handler
+      Handler: destinations_processor.app.lambda_handler
       Runtime: python3.13
       Architectures:
         - x86_64

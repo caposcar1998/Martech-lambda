@@ -1,8 +1,9 @@
 from decorators.decorators import json_response
-from api.track import eventTrack, add_destinations
+from controllers.track import event_track
+from controllers.destinations import add_destinations
 
 ROUTES = {
-    ("/track", "post"): eventTrack,
+    ("/track", "post"): event_track,
     ("/destinations", "post"): add_destinations,
 }
 

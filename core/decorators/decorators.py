@@ -18,8 +18,3 @@ def json_response(func):
 
     return wrapper
 
-
-@json_response
-def lambda_handler(event, context):
-    # Just return dict or data; decorator wraps it nicely
-    return {"message": "Hello world"}
