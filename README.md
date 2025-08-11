@@ -97,7 +97,7 @@ sam build
 2. Deploy
 
 ```bash
-make deploy
+sam deploy
 ```
 
 3. Find your API URL in API Gateway under the MartechApi stage.
