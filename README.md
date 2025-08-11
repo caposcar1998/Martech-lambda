@@ -33,6 +33,7 @@ Users on phones and computers send events (such as actions or clicks) to a centr
 5. Queue triggers a destination Lambda.
 6. Destination Lambda processes events for communication and analytics and sends the events.
 7. Delivery status is saved in DynamoDB (`true` if successful, `false` if not).
+   ![Response](image-1.png)
 
 ### Below steps are **not implemented** yet:
 
@@ -78,6 +79,10 @@ If you do not want to install all dependencies, you can test by requesting the c
 1. [analytics](https://app.beeceptor.com/console/testoscar)
 1. [analytics](https://app.beeceptor.com/console/testcomms)
 1. [comms](https://app.beeceptor.com/console/testsrive)
+
+1. Create destinations via the /destinations endpoint. (optional)
+
+1. Send track events via /track.
 
 ## Mount the project in the cloud (Recommended)
 
