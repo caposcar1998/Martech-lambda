@@ -4,7 +4,7 @@ from controllers.cdp import spin_send_communication
 from database.methods import spin_add_item, spin_get_all
 from models.models import SQSRecordDTO, InsertDestinationDTO
 
-def lambda_handler(event, context):
+def lambda_handler(event, context) -> dict[str, str]:
     for record_dict in event["Records"]:
         record = SQSRecordDTO(**record_dict)
         

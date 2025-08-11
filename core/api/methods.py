@@ -2,7 +2,7 @@ import requests
 from typing import Any
 
 
-def spin_post(url: str, payload: Any | None, headers=None, timeout=10):
+def spin_post(url: str, payload: Any | None, headers: Any =None, timeout: int =10) -> int:
     try:
         default_headers = {"Content-Type": "application/json"}
         if headers:
@@ -18,7 +18,7 @@ def spin_post(url: str, payload: Any | None, headers=None, timeout=10):
         return 500
 
 
-def spin_get(url, params=None, headers=None, timeout=10):
+def spin_get(url: str, params: Any =None, headers: Any =None, timeout: int =10) -> int:
     try:
         default_headers = {"Accept": "application/json"}
         if headers:

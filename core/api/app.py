@@ -9,7 +9,7 @@ ROUTES = {
 
 
 @json_response
-def lambda_handler(event, context):
+def lambda_handler(event, context) -> dict[str, str]:
 
     path = event.get("path", "")
     method = event.get("httpMethod", "").lower()

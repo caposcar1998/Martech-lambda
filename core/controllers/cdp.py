@@ -1,13 +1,14 @@
-import json
 from api.methods import spin_post
 from models.models import TrackEventDTO
-
-def spin_send_communication(destination, body, insert_destination):
+from utils.parse import safe_json_parse
+from typing import Any
+def spin_send_communication(destination: Any, body: Any, insert_destination: Any) -> Any:
     destination_url = destination["url"]
     destination_headers = destination.get("headers", None) 
 
     preferd_communication_channel = define_type_communication(body)
     url_communication = destination_url+"/"+preferd_communication_channel
+
     res = spin_post(url_communication, body, destination_headers)
 
     if not (200 <= res < 300):
@@ -27,27 +28,3 @@ def define_type_communication(message: TrackEventDTO) -> str:
     if preferred == "sms":
         return "sms"    
     return ""  
-
-
-def safe_json_parse(data):
-    # If it's already a dict, return it
-    if isinstance(data, dict):
-        return data
-    
-    # If it's bytes, decode it first
-    if isinstance(data, (bytes, bytearray)):
-        data = data.decode()
-
-    # If it's a string, try parsing it
-    if isinstance(data, str):
-        try:
-            parsed = json.loads(data)
-            # If parsed is still a string, try parsing again
-            if isinstance(parsed, str):
-                parsed = json.loads(parsed)
-            return parsed
-        except json.JSONDecodeError:
-            return None
-    
-    # Anything else → None
-    return None
