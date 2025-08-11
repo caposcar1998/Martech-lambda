@@ -2,7 +2,8 @@
 
 This system collects events sent by users from their phones and computers and routes them to different destinations like analytics or notifications.
 
-How It Works
+How It Works?
+
 Users on phones and computers send events (like actions or clicks) to a central API.
 
 The API puts these events into a queue (AWS SQS)
@@ -14,6 +15,33 @@ Some events go to an analytics system to track user behavior.
 Others go to a notification system to send alerts or messages.
 
 You can new destinations with a simple API call, this will ocurr at the moment without needing to redeploy the lambda function!
+
+In a nutshell the funcionality is:
+
+1. User sends events through API
+2. API call goes through api gateway
+3. Api gateway sends the event to labda marterch
+4. Martech lambda process the event and sends it to a queue
+5. Queue sends event a destination lambda
+6. Destination lambda process the events for communication and analytics and send the events
+7. In DynamoDB the status of the delivery is saved, false if not success, and true if success
+
+### Below steps are not implemente
+
+8. If delivery is not success the message will be send to a DLQ
+9. Message will be send to a different lambda that will try to send the message to the destination that returned the error, N times
+10. If success, change status in database
+11. If fail, delete message and do not change status in database
+
+### Communication calls:
+
+- When a call goes to communication flow, depending the preferredChannel, thats where the mock route will assign.
+  Example:
+  If preferredChannel is email, the enpoint will be send with /email
+
+### Analytics calls
+
+- The call will be send as it is to the analytics software
 
 # Diagram
 
@@ -30,10 +58,9 @@ You can new destinations with a simple API call, this will ocurr at the moment w
 
 ## Test current implementation
 
-If you do not want to install all the necesarry dependencies you can test asking @caposcar for the URLs
-current URLs
+If you do not want to install all the necesarry dependencies you can test asking @caposcar for the current URLs
 
-1. In the current implementation there 3 beeceptor created, 2 of them function as analytics and one as notificacions
+1. In the current implementation there 3 beeceptor created, 2 of them function as analytics and one as communication.
 
 1. [analytics](https://app.beeceptor.com/console/testoscar)
 1. [analytics](https://app.beeceptor.com/console/testcomms)
@@ -57,7 +84,7 @@ make deploy
 
 3. You can find your api URl entering api gateway and look for the MartechApi.
 
-4. AWS SQS will be created with the name events
+4. AWS SQS will be created with the name "events"
 
 5. DynamoDB tables will be created with the names:
 
@@ -177,8 +204,8 @@ Create a new destination for the events
 
 ### Responses
 
-| Attribute    | Type   | Description                       |
-| ------------ | ------ | --------------------------------- |
-| responseId   | string | Message Id                        |
-| responseBody | object | Payload send                      |
-| destinations | object | Status of each destination status |
+| Attribute    | Type   | Description                                          |
+| ------------ | ------ | ---------------------------------------------------- |
+| responseId   | string | Message Id                                           |
+| responseBody | object | Payload send                                         |
+| destinations | object | Status of each destination status {destiny: boolean} |
