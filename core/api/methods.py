@@ -3,7 +3,7 @@ from typing import Any
 
 
 def spin_post(
-    url: str, payload: Any | None, headers: Any = None, timeout: int = 10
+    url: str, payload: Any, headers: Any = None, timeout: int = 10
 ) -> int:
     try:
         default_headers = {"Content-Type": "application/json"}

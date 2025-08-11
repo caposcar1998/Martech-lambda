@@ -26,7 +26,7 @@ class DestinationsDTO(BaseModel):
     destinationName: str
     url: str
     type: DestinationType
-    headers: Optional[str]
+    headers: Optional[Dict[str, str]]
 
 
 class SQSRecordDTO(BaseModel):

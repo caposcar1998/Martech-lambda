@@ -189,8 +189,11 @@ Create a new destination for the events
   "destinationName": "Braze12",
   "url": "https://testsrive.free.beeceptor.com",
   "type":"CDP" "OR" "analytics",
-  "headers": "",
-  }
+  "headers": {
+    "testHeader": "test",
+    "anotherTest": "prueba"
+    },
+    }
   ```
 
 - **Request Response:**
