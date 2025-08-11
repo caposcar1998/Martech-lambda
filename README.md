@@ -2,46 +2,59 @@
 
 This system collects events sent by users from their phones and computers and routes them to different destinations like analytics or notifications.
 
-How It Works?
+## Table of Contents
 
-Users on phones and computers send events (like actions or clicks) to a central API.
+- [How It Works](#how-it-works)
+- [Diagram](#diagram)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [API Endpoints](#api-endpoints)
+- [Database Schemas](#database-schemas)
+- [Stack Selected](#stack-selected)
 
-The API puts these events into a queue (AWS SQS)
+---
 
-A background processor (AWS Lambda) reads events from the queue and sends them to the right places:
+## How It Works
 
-Some events go to an analytics system to track user behavior.
+Users on phones and computers send events (such as actions or clicks) to a central API.
 
-Others go to a notification system to send alerts or messages.
+- The API puts these events into a queue (AWS SQS).
+- A background processor (AWS Lambda) reads events from the queue and sends them to the right destinations:
+  - Some events go to an analytics system to track user behavior.
+  - Others go to a notification system to send alerts or messages.
+- You can add new destinations with a simple API call; this happens immediately without needing to redeploy the Lambda function!
 
-You can new destinations with a simple API call, this will ocurr at the moment without needing to redeploy the lambda function!
+### In a nutshell, the functionality is:
 
-In a nutshell the funcionality is:
+1. User sends events through the API.
+2. API call goes through API Gateway.
+3. API Gateway forwards the event to the Martech Lambda.
+4. Martech Lambda processes the event and sends it to a queue.
+5. Queue triggers a destination Lambda.
+6. Destination Lambda processes events for communication and analytics and sends the events.
+7. Delivery status is saved in DynamoDB (`true` if successful, `false` if not).
 
-1. User sends events through API
-2. API call goes through api gateway
-3. Api gateway sends the event to labda marterch
-4. Martech lambda process the event and sends it to a queue
-5. Queue sends event a destination lambda
-6. Destination lambda process the events for communication and analytics and send the events
-7. In DynamoDB the status of the delivery is saved, false if not success, and true if success
+### Below steps are **not implemented** yet:
 
-### Below steps are not implemente
+8. If delivery fails, the message will be sent to a Dead Letter Queue (DLQ).
+9. A separate Lambda will retry sending the message to the failing destination up to N times.
+10. On success, the status in the database will be updated.
+11. On failure after retries, the message will be deleted without changing the status.
 
-8. If delivery is not success the message will be send to a DLQ
-9. Message will be send to a different lambda that will try to send the message to the destination that returned the error, N times
-10. If success, change status in database
-11. If fail, delete message and do not change status in database
+---
 
-### Communication calls:
+### Communication Calls
 
-- When a call goes to communication flow, depending the preferredChannel, thats where the mock route will assign.
-  Example:
-  If preferredChannel is email, the enpoint will be send with /email
+- When a call goes to the communication flow, the `preferredChannel` determines the route.
 
-### Analytics calls
+Example:  
+If `preferredChannel` is `email`, the endpoint will include `/email`.
 
-- The call will be send as it is to the analytics software
+### Analytics Calls
+
+- Calls are forwarded as-is to the analytics software.
+
+---
 
 # Diagram
 
@@ -58,7 +71,7 @@ In a nutshell the funcionality is:
 
 ## Test current implementation
 
-If you do not want to install all the necesarry dependencies you can test asking @caposcar for the current URLs
+If you do not want to install all dependencies, you can test by requesting the current URLs from @caposcar:
 
 1. In the current implementation there 3 beeceptor created, 2 of them function as analytics and one as communication.
 
@@ -70,50 +83,52 @@ If you do not want to install all the necesarry dependencies you can test asking
 
 Mounting the project needs an AWS accountt configured in the CLI , and SAM installed
 
-1. Build the project using
+1. Build the project
 
 ```bash
 sam build
 ```
 
-2. Deploy using
+2. Deploy
 
 ```bash
 make deploy
 ```
 
-3. You can find your api URl entering api gateway and look for the MartechApi.
+3. Find your API URL in API Gateway under the MartechApi stage.
 
-4. AWS SQS will be created with the name "events"
+4. AWS SQS queue named events will be created automatically.
 
-5. DynamoDB tables will be created with the names:
+5. DynamoDB tables created:
 
-- Destinations: All the destinations the events can go to
-- Responses: Logs if the CDP calls are succesfull or not.
+- Destinations: stores event destinations.
+- Responses: logs whether CDP calls succeeded.
 
-6. Create destinations using the endopoint /destinations
+6. Create destinations via the /destinations endpoint.
 
-7. Send track events using /track
+7. Send track events via /track.
 
 ## Locally (Not recommended as it depends in AWS SQS and dybamoDB)
 
-Running the project localy needs an AWS accountt configured in the CLI , and a queue created in AWS
+Requires AWS account and existing SQS queue.
 
-1. Create an SQS queue called events in AWS
-2. Create two
-3. Build the project using
+0. Create an SQS queue named events in AWS
 
-```bash
-sam local start-api
-```
+1. Create two dynamoDB tables as the ones in table schema
 
-3. Run the local api using:
+2. Build the project
 
 ```bash
 sam local start-api
 ```
 
-4. Run a function individually
+3. Start the local API:
+
+```bash
+sam local start-api
+```
+
+4. Invoke a function individually:
 
 ```bash
 sam local invoke <FunctionLogicalID> -e <event_file.json>
@@ -209,3 +224,24 @@ Create a new destination for the events
 | responseId   | string | Message Id                                           |
 | responseBody | object | Payload send                                         |
 | destinations | object | Status of each destination status {destiny: boolean} |
+
+# Stack selected
+
+Technology & Architecture Decisions
+Language Selection
+Python was chosen for its ability to deliver concise and fast MVPs, requiring minimal external libraries and offering highly readable syntax. The main drawback is its lack of static typing, which can cause confusion with object structures if Data Transfer Objects (DTOs) are not well-defined.
+
+Framework & Deployment
+AWS SAM was selected because it allows creating, deploying, invoking, and testing AWS services with just three simple commands. While alternatives like LocalStack and OpenStack were considered, SAM was preferred since all services were built exclusively on AWS, and provisioning resources directly in the cloud proved both fast and cost-effective.
+
+Database Selection
+DynamoDB was chosen for its seamless integration with AWS SAM’s YAML configuration, enabling quick and secure access during MVP development. Its flexible schema allowed experimentation until the optimal data model was found.
+
+Project Structure
+The project follows a modular architecture, grouping APIs, controllers, database access, models, queues, and utilities into dedicated directories under core for maintainability and scalability. Tests are kept in a separate folder for easy discovery. Configuration files and example events are placed at the root to simplify AWS SAM deployment and local testing.
+
+Lambda Functions
+Two Lambda functions were created: one dedicated to API calls and another for sending messages to queue destinations. This separation supports an asynchronous architecture, preventing bottlenecks and improving scalability.
+
+Dead Letter Queue
+A Dead Letter Queue (DLQ) was planned to capture events that failed to be delivered to analytics and communication tools for later retries. However, the DLQ and its associated Lambda were not implemented in this MVP.
