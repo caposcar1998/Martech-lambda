@@ -119,7 +119,7 @@ Requires AWS account and existing SQS queue.
 2. Build the project
 
 ```bash
-sam local start-api
+sam build
 ```
 
 3. Start the local API:
