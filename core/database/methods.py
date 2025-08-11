@@ -4,6 +4,7 @@ from typing import Any
 
 dynamodb = boto3.resource("dynamodb")
 
+
 def spin_add_item(table_name: str, item: list[dict]) -> str:
     table = dynamodb.Table(table_name)
     try:

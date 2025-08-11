@@ -1,6 +1,7 @@
 from typing import Any
 import json
 
+
 def safe_json_parse(data: Any) -> Any:
     if isinstance(data, dict):
         return data
@@ -16,5 +17,5 @@ def safe_json_parse(data: Any) -> Any:
             return parsed
         except json.JSONDecodeError:
             return None
-    
+
     return None

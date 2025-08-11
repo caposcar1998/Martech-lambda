@@ -1,12 +1,14 @@
 from typing import Optional, Any, Dict
 from pydantic import BaseModel, Field
-from typing import Dict 
+from typing import Dict
 from enum import Enum
+
 
 class MetadataDTO(BaseModel):
     promoId: str
     device: str
     preferredChannel: Optional[str] = None
+
 
 class TrackEventDTO(BaseModel):
     userId: str
@@ -14,15 +16,18 @@ class TrackEventDTO(BaseModel):
     timestamp: str
     metadata: MetadataDTO
 
+
 class DestinationType(str, Enum):
     ANALYTICS = "analytics"
     CDP = "CDP"
+
 
 class DestinationsDTO(BaseModel):
     destinationName: str
     url: str
     type: DestinationType
     headers: Optional[str]
+
 
 class SQSRecordDTO(BaseModel):
     messageId: str
@@ -35,7 +40,8 @@ class SQSRecordDTO(BaseModel):
     eventSourceARN: str
     awsRegion: str
 
+
 class InsertDestinationDTO(BaseModel):
     responseId: str
     responseBody: Any
-    destinations: Dict[Any, Any] = Field(default_factory=dict) 
+    destinations: Dict[Any, Any] = Field(default_factory=dict)

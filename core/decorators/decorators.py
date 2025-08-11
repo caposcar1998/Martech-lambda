@@ -12,4 +12,3 @@ def json_response(func):
             return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
 
     return wrapper
-

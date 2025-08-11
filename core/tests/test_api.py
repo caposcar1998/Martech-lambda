@@ -14,7 +14,6 @@ def test_spin_post_success(mock_post):
     mock_post.assert_called_once()
 
 
-
 @patch("api.methods.requests.get")
 def test_spin_get_success(mock_get):
     mock_response = Mock()

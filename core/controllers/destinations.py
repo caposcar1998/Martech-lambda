@@ -3,6 +3,7 @@ from pydantic import ValidationError
 from database.methods import spin_create
 from models.models import DestinationsDTO
 
+
 def add_destinations(body: str) -> dict[str, str]:
     try:
         body_dict = json.loads(body)

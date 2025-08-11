@@ -3,6 +3,7 @@ from pydantic import ValidationError
 from queues.queueSender import spin_send_message_queue
 from models.models import TrackEventDTO
 
+
 def event_track(body: str) -> dict[str, str]:
     try:
         body_dict = json.loads(body)
